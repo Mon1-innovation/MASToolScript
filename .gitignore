@@ -1,0 +1,7 @@
+*.log
+Tools/game/masrun
+__pycache__
+build/*.*
+dist
+MASToolKit.log
+cache
