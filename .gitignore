@@ -1,7 +1,8 @@
 *.log
 Tools/game/masrun
 __pycache__
-build/*.*
+build
+build/*
 dist
 MASToolKit.log
 cache

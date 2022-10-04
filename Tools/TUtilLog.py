@@ -4,7 +4,7 @@
 import platform
 import logging
 import time
-import traceback
+import traceback, TLogo
 logging.basicConfig(level=logging.DEBUG #设置日志输出格式
                     ,filename="./MASToolKit.log" #log日志输出的文件位置和文件名
                     ,filemode="w" #文件的写入格式，w为重新写入文件，默认是追加
@@ -14,13 +14,14 @@ logging.basicConfig(level=logging.DEBUG #设置日志输出格式
                     ,encoding='utf-8'
                     )
 logging.info(
-    """OS: {0} - {1} - {2}
-    """.format(
+    """OS: {0} - {1} - {2}""".format(
         platform.system(),
         platform.release(),
         platform.version()
     )
 )
+logging.info("MASToolKit Version: " + TLogo.VER)
+
 def debug(str):
     logging.debug("{}".format(str), )
 def info(str):

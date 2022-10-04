@@ -1,3 +1,4 @@
+import TUtil
 VER = "0.0.1"
 MOYU = R"""
 
@@ -28,9 +29,17 @@ MOYU = R"""
 欢迎使用 MASTookKit by Sir.P v{}
 当提示选项时，输入对应的选项，然后按下回车键确定选项。
 如果程序卡住，可以尝试点一下回车来继续。（通常这种情况发生时，标题栏会出现“选择”二字）
-请关闭所有的代理/加速软件
+在使用前，请关闭所有的代理/加速软件
 ----------------------------------------------------------------------------------------
 """.format(VER)
 
 def moyu():
     print(MOYU)
+    a = self_checkupdate():
+    if a:
+        print("MASToolKit有更新 -> {}".format(VER))
+        print("====================================")
+        print(TUtil.get_latest_release_info("Mon1-innovation", "MASToolScript"))
+
+def self_checkupdate():
+    return TUtil.check_update(VER.split('.'), "Mon1-innovation", "MASToolScript")
