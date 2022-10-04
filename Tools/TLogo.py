@@ -1,5 +1,5 @@
 import TUtil
-VER = "0.0.1"
+VER = "0.0.2"
 MOYU = R"""
 
           _____                   _______               _____                    _____
@@ -35,7 +35,7 @@ MOYU = R"""
 
 def moyu():
     print(MOYU)
-    a = self_checkupdate():
+    a = self_checkupdate()
     if a:
         print("MASToolKit有更新 -> {}".format(VER))
         print("====================================")

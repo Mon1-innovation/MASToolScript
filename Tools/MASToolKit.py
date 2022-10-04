@@ -147,6 +147,7 @@ else:
                     TUtil.tool_clear()
         if name == 'spritepacks.zip':
             print('是否下载官方精灵包?（未汉化）')
+            print('不下载则需要手动安装精灵包')
             print("Y/N")
             spdl = input().lower()
             if spdl != 'y':

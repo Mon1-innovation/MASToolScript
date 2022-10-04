@@ -10,7 +10,6 @@ import time
 import traceback
 import zipfile
 
-from TUtilLog import error
 
 _install_completed = None
 ENABLE_SPEED = False
@@ -75,7 +74,7 @@ def get_latest_release_tag(own, rep):
         return url['tag_name']
     except Exception as e:
         print('遇到致命错误，请查看log获取详细信息')
-        error(e)
+        TUtilLog.error(e)
         return('版本号获取失败')
 
 def check_update(oldver, own, rep):
@@ -101,11 +100,15 @@ def check_update(oldver, own, rep):
         
     url = requests.get(
         "https://api.github.com/repos/{}/{}/releases/latest".format(own, rep))
-    ver = url.json()['tag_name']
-    versp = ver[1:].split('.')
-    if comp_version(oldver, versp):
-        return ver
-    return False
+    try:
+        ver = url.json()['tag_name']
+        versp = ver[1:].split('.')
+        if comp_version(oldver, versp):
+            return ver
+        return False
+    except Exception as e:
+        TUtilLog.error("检查更新时发生异常: {}".format(e))
+        return False
 
 def get_latest_release_info(own, rep):
     """
@@ -224,7 +227,8 @@ def tool_clear():
     except:
         TUtilLog.exception()
     finally:
-        quit()
+        import os
+        os._exit()
 
 def print_info(message):
     print(message)
