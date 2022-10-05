@@ -1,4 +1,4 @@
-import os
+import os, sys
 
 
-print(os.path.exists('game/masrun'))
+print(sys.path[0])

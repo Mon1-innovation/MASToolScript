@@ -106,10 +106,12 @@ else:
     TUtil.get_github_rate_limit()
     info(_("未安装 MAS"))
     print(_("未安装 MAS"))
-    print('您是否想要启动Github下载加速？')
-    print('Y/N')
+    print('您是否想要启动Github下载加速？(建议开启)')
+    print('Y(默认)/N')
     speed = input()
-    if speed.lower() == 'y':
+    if speed.lower() == 'n':
+        pass
+    else:
         print_info('启用由 https://fastgit.xyz/ 提供的加速服务')
         TUtil.ENABLE_SPEED = True
     print(_("准备安装MAS..."))
@@ -148,7 +150,7 @@ else:
         if name == 'spritepacks.zip':
             print('是否下载官方精灵包?（未汉化）')
             print('不下载则需要手动安装精灵包')
-            print("Y/N")
+            print("Y/N(默认)")
             spdl = input().lower()
             if spdl != 'y':
                 print_info('跳过精灵包下载')

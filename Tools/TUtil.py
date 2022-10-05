@@ -11,6 +11,7 @@ import traceback
 import zipfile
 
 
+
 _install_completed = None
 ENABLE_SPEED = False
 
@@ -171,7 +172,7 @@ def download(url, path, name):
                           'https://download.fastgit.org/')
         url = url.replace('https://raw.githubusercontent.com/',
                           'https://raw.fastgit.org/')
-
+        TUtilLog.debug("request.get: '{}'".format(url))
     def MB(byte):
         return byte / 1024 / 1024
     interval = 0.5
