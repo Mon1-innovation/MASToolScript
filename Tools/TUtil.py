@@ -9,13 +9,17 @@ import requests
 import time
 import traceback
 import zipfile
+from tqdm import tqdm
 
 
 
 _install_completed = None
 ENABLE_SPEED = False
 
-
+def set_proxy(port):
+    os.environ["http_proxy"] = "http://127.0.0.1:{}".format(port)
+    os.environ["https_proxy"] = "https://127.0.0.1:{}".format(port)
+    print_info("代理地址设置为: '{}'".format("127.0.0.1:{}".format(port)))
 def un_zip(file_name):
     """
     解压文件
@@ -127,7 +131,7 @@ def get_latest_release_info(own, rep):
     try:
         return url['body']
     except Exception as e:
-        error(e)
+        TUtilLog.error(e)
         return "更新信息获取失败"
 
 
@@ -173,50 +177,25 @@ def download(url, path, name):
         url = url.replace('https://raw.githubusercontent.com/',
                           'https://raw.fastgit.org/')
         TUtilLog.debug("request.get: '{}'".format(url))
-    def MB(byte):
-        return byte / 1024 / 1024
-    interval = 0.5
     if not os.path.exists(path):   # 看是否有该文件夹，没有则创建文件夹
         os.mkdir(path)
-    start = time.time()  # 下载开始时间
-    response = requests.get(url, stream=True)
-    size = 0  # 初始化已下载大小
-    chunk_size = 1024  # 每次下载的数据大小
-    content_size = int(response.headers['content-length'])  # 下载文件总大小
-    time_ = time.time()
-    down_size = 1  # 已下载字节数
-    old_down_size = 1  # 上一次已下载字节数
-    speed = 1
-    try:
-        if response.status_code == 200:  # 判断是否响应成功
-            print('Start download,[File size]:{size:.2f} MB'.format(
-                size=content_size / chunk_size / 1024))  # 开始下载，显示下载文件大小
-            filepath = path+'\\' + name  # 设置图片name，注：必须加上扩展名
-            with open(filepath, 'wb') as file:  # 显示进度条
-                for data in response.iter_content(chunk_size=chunk_size):
-                    down_size += len(data)
-                    if time.time() - time_ > interval:
-                        # rate = down_size / file_size * 100  # 进度  0.01%
-                        speed = (down_size - old_down_size) / \
-                            interval  # 速率 0.01B/s
-                        old_down_size = down_size
-                        time_ = time.time()
-                    file.write(data)
-                    size += len(data)
-
-                    #print('\r'+'[Downloading]:\033[0;32;40m%-50s\033[0m| %.2f%% | %.1FMB/s - %.1fs' % (
-                    print('\r'+'[Downloading]:%-50s| %.2f%% | %.1FMB/s - %.1fs' % (
-                        '█'*int(size*50 / content_size),
-                        float(size / content_size * 100),
-                        MB(speed),
-                        (content_size - down_size) / speed),
-                        end='         ')
-
-        end = time.time()  # 下载结束时间
-        print("\n'" + name + "' Download completed!,times: %.2fs" % (end - start))  # 输出下载用时时间
-    except Exception as e:
-        print('Error!')
-        TUtilLog.error("{}".format(traceback.format_exc(e)))
+    failtime=5
+    while True:
+        try:
+            response = requests.get(url, stream=True)
+            TUtilLog.debug(response.headers) # 打印查看基本头信息
+            data_size=int(response.headers['Content-Length'])/1024/1024 # 字节/1024/1024=MB
+            with open(os.path.join(path, name),'wb') as f:
+                for data in tqdm(iterable=response.iter_content(1024*1024),total=int(data_size+1),desc=name,unit='MB'):
+                    f.write(data)
+            break
+        except Exception as e:
+            print('出现异常!自动重试中...')
+            TUtilLog.warning("{}".format(traceback.format_exc(e)))
+            failtime-=1
+            if failtime<0:
+                raise Exception("资源获取失败！请稍后再试！")
+            continue
 
 
 def tool_clear():
@@ -229,7 +208,7 @@ def tool_clear():
         TUtilLog.exception()
     finally:
         import os
-        os._exit()
+        os._exit(0)
 
 def print_info(message):
     print(message)

@@ -103,17 +103,30 @@ if mas_installed:
     print(_("MAS 已经安装"))
     print("删除masrun文件即可让本程序覆盖重装")
 else:
-    TUtil.get_github_rate_limit()
+    try:
+        TUtil.get_github_rate_limit()
+    except:
+        pass
     info(_("未安装 MAS"))
     print(_("未安装 MAS"))
-    print('您是否想要启动Github下载加速？(建议开启)')
-    print('Y(默认)/N')
+    print('您是否想要启动第三方Github下载加速？')
+    print('Y/N(默认)')
     speed = input()
-    if speed.lower() == 'n':
+    if speed.lower() != 'y':
+        print_info("您是否想设置本地代理")
+        print('Y/N(默认)')
+        speed = input()
+        if speed.lower() != 'y':
+            pass
+        else:
+            print_info('请输入代理端口号')
+            port=input()
+            TUtil.set_proxy(port)
         pass
     else:
         print_info('启用由 https://fastgit.xyz/ 提供的加速服务')
         TUtil.ENABLE_SPEED = True
+
     print(_("准备安装MAS..."))
     print("获取DDLC下载链接...")
     info("开始下载DDLC: {}".format(CACHE_PATH))
