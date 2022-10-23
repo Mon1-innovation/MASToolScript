@@ -4,6 +4,7 @@
 from pickle import TRUE
 import sys, time
 from tkinter import N
+import traceback
 import TUtil
 import TUtilLog
 from TUtilLog import info, debug, warning, error
@@ -57,7 +58,7 @@ def tool_box():
                         TUtil.download(dl, CACHE_PATH, 'chs.rpa')
                     except Exception as e:
                         print("下载失败，查看MASToolKit.log获取更多信息")
-                        error("下载失败：\n{}".format(e))
+                        error("下载失败：\n{}".format(traceback.format_exc()))
                         TUtil.tool_clear()
             if name == 'chs_gui.rpa':
                 print_info('准备下载chs_gui.rpa...')
@@ -204,8 +205,7 @@ else:
                     TUtil.download(dl, CACHE_PATH, 'chs.rpa')
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
-                    error("下载失败：\n{}".format(e))
-                    TUtil.tool_clear()
+                    raise e
         if name == 'chs_gui.rpa':
             print_info('准备下载chs_gui.rpa...')
             try:
@@ -218,8 +218,7 @@ else:
                     TUtil.download(dl, CACHE_PATH, 'chs_gui.rpa')
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
-                    error("下载失败：\n{}".format(e))
-                    TUtil.tool_clear()
+                    raise 
   
     print_info('开始解压文件')
     print_info('解压ddlc')
@@ -239,7 +238,11 @@ else:
         TUtil.un_zip(CACHE_PATH + '/spritepacks.zip')
         print_info('安装精灵包...')
         TUtil.dir_check(CACHE_PATH + '/spritepacks.zip', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc')
-    TUtil.get_extra_file()
+    try:
+        TUtil.get_extra_file()
+    except Exception as e:
+        print_info("安装额外内容失败, 跳过")
+        TUtilLog.warning(e)
     print_info('移出缓存文件夹...')
     TUtil.copy_dir(CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc', PATH)
     print_info('MAS安装完成~')

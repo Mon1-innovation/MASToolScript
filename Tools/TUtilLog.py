@@ -5,7 +5,7 @@ import platform
 import logging
 import time
 import traceback, TLogo
-logging.basicConfig(level=logging.DEBUG #设置日志输出格式
+logging.basicConfig(level=logging.NOTSET #设置日志输出格式
                     ,filename="./MASToolKit.log" #log日志输出的文件位置和文件名
                     ,filemode="w" #文件的写入格式，w为重新写入文件，默认是追加
                     ,format="%(asctime)s | %(levelname)s | %(message)s" #日志输出的格式
