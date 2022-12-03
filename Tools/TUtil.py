@@ -473,7 +473,10 @@ def check_json(filename, path, movedir=None):
 def get_extra_file():
     # 下载额外内容仅在第一次安装时进行
     print_info("下载额外内容")
-    a = requests.get('https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
+    try:
+        a = requests.get('https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
+    except:
+        a = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json')    
     a = a.json()
     for file in tqdm(a["extra_files"], desc="额外内容"):
         if file[3] == "EXTRACT_EXTRA":

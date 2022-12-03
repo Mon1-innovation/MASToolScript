@@ -38,7 +38,10 @@ def get_base_file():
     global DOWNLOAD_DDLC_URL
     # 获取基础文件信息
     print_info("获取基础文件信息")
-    a = requests.get('https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
+    try:
+        a = requests.get('https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
+    except:
+        a = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json')
     a = a.json()
     for file in tqdm.tqdm(a["base_files"], desc="基础文件"):
         if file[0] == "ddlc.zip":
