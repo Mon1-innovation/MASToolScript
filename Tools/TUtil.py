@@ -36,7 +36,7 @@ def un_zip(file_name):
             pass
         else:
             os.mkdir(file_name + "_files")
-        for names in tqdm(zip_file.namelist(), "Extract"):
+        for names in tqdm(zip_file.namelist(), "解压文件"):
             zip_file.extract(names, file_name + "_files/")
         zip_file.close()
         return True
@@ -217,7 +217,7 @@ def print_info(message):
 def check_zip(path="./", targetdir = './'):
     dirs = os.listdir(path)
 
-    for _file in tqdm(dirs, desc="Extract"):
+    for _file in tqdm(dirs, desc="安装内容"):
         if _file.find('.zip'):
             if un_zip(_file):
                 pass
@@ -238,7 +238,7 @@ def dir_check(filedir, path):
     """
     path=path.replace('//', '/')
     subfile = os.listdir(filedir+"_files")
-    for i in tqdm(subfile, desc="Copy"):
+    for i in tqdm(subfile, desc="复制文件"):
         ifull = filedir + "_files" + "/" + i
         if copy_dir_m(i, ifull, path):
             # 处理成功
@@ -475,10 +475,11 @@ def get_extra_file():
     print_info("下载额外内容")
     a = requests.get('https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
     a = a.json()
-    for file in tqdm(a["extra_files"], desc="Extra Items"):
+    for file in tqdm(a["extra_files"], desc="额外内容"):
         if file[3] == "EXTRACT_EXTRA":
             download(file[1], file[2], file[0])
             un_zip(file[2] + "/" + file[0])
             dir_check(file[2] + "/" + file[0], path = "./CACHE" + '/ddlc.zip_files/DDLC-1.1.1-pc')
         else:
             download(file[1], file[2], file[0])
+

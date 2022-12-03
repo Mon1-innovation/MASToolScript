@@ -4,7 +4,7 @@
 from pickle import TRUE
 import sys, time
 from tkinter import N
-import traceback
+import traceback, requests, tqdm
 import TUtil
 import TUtilLog
 from TUtilLog import info, debug, warning, error
@@ -34,6 +34,16 @@ mas_installed = TUtil.is_exists(PATH + "/game/masrun")
 #print("1 - 简体中文 (Default)")
 #print("2 - English")
 #
+def get_base_file():
+    global DOWNLOAD_DDLC_URL
+    # 获取基础文件信息
+    print_info("获取基础文件信息")
+    a = requests.get('https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
+    a = a.json()
+    for file in tqdm.tqdm(a["base_files"], desc="基础文件"):
+        if file[0] == "ddlc.zip":
+            DOWNLOAD_DDLC_URL = file[1]
+
 
 def tool_box():
     def cn_update():
@@ -129,6 +139,7 @@ else:
         TUtil.ENABLE_SPEED = True
 
     print(_("准备安装MAS..."))
+    get_base_file()
     print("获取DDLC下载链接...")
     info("开始下载DDLC: {}".format(CACHE_PATH))
     TUtil.download(DOWNLOAD_DDLC_URL, CACHE_PATH, 'ddlc.zip')
