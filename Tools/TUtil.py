@@ -483,6 +483,14 @@ def get_extra_file():
             download(file[1], file[2], file[0])
             un_zip(file[2] + "/" + file[0])
             dir_check(file[2] + "/" + file[0], path = "./CACHE" + '/ddlc.zip_files/DDLC-1.1.1-pc')
+        elif file[3] == "ASK_DOWNLOAD":
+            print_info("是否下载{}, 默认为N".format(file[1]))
+            print_info(file[5])
+            a = input().lower()
+            if a != 'y':
+                print_info("取消下载")
+            else:
+                download(file[1], file[2], file[0])
         else:
             download(file[1], file[2], file[0])
 
