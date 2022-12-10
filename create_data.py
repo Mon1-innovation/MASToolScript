@@ -15,7 +15,8 @@ data['extra_files'] = []
     # 名称, 下载链接, 下载到相对路径, 额外操作
     # 额外操作：
     # 0. None - 不指定额外操作
-    # 2. "EXTRACT_EXTRA" - 解压，并以扩展内容安装
+    # 1. ASK_DOWNLOAD - 下载前进行询问，在旧版中会直接下载
+    # 2. EXTRACT_EXTRA - 解压，并以扩展内容安装
     # 只在安装时下载
 data['extra_files'].append(
     (

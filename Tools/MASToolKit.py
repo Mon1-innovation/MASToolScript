@@ -71,8 +71,7 @@ def tool_box():
                         TUtil.download(dl, CACHE_PATH, 'chs.rpa')
                     except Exception as e:
                         print("下载失败，查看MASToolKit.log获取更多信息")
-                        error("下载失败：\n{}".format(traceback.format_exc()))
-                        TUtil.tool_clear()
+                        raise e
             if name == 'chs_gui.rpa':
                 print_info('准备下载chs_gui.rpa...')
                 try:
@@ -85,15 +84,11 @@ def tool_box():
                         TUtil.download(dl, CACHE_PATH, 'chs_gui.rpa')
                     except Exception as e:
                         print("下载失败，查看MASToolKit.log获取更多信息")
-                        error("下载失败：\n{}".format(e))
-                        TUtil.tool_clear()
-        TUtil.copy(CACHE_PATH + '/chs.rpa', "./game")
-        TUtil.copy(CACHE_PATH + '/chs_gui.rpa', "./game")
-
+                    raise 
     print("===============================")
     print_info("请选择功能")
     print_info("1. 重装最新版汉化")
-    print_info("2. 安装扩展内容（懒得动，不想写了）")
+    print_info("2. 安装扩展内容（未实现）")
     print_info("3. 退出（默认）")
     a = input()
     if a == '1':
@@ -115,7 +110,8 @@ _ = TTranslation.get_tl
 if mas_installed:
     info(_("MAS 已经安装"))
     print(_("MAS 已经安装"))
-    print("删除masrun文件即可让本程序覆盖重装")
+    #print("删除masrun文件即可让本程序覆盖重装")
+    tool_box()
 else:
     try:
         TUtil.get_github_rate_limit()
@@ -124,6 +120,7 @@ else:
     info(_("未安装 MAS"))
     print(_("未安装 MAS"))
     print('您是否想要启动第三方Github下载加速？')
+    print("不建议开启，因为第三方加速疑似寄了")
     print('Y/N(默认)')
     speed = input()
     if speed.lower() != 'y':
