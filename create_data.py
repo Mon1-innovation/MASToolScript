@@ -28,21 +28,21 @@ data['extra_files'].append(
 )
 data['extra_files'].append(
     (
-        "sp_zhcn.zip",
-        r"https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/sp_cn_0.12.9.zip",
-        "./cache",
-        "EXTRACT_EXTRA"
+        "如何更新.txt",
+        r"https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/%E5%A6%82%E4%BD%95%E6%9B%B4%E6%96%B0.txt", 
+        "./",
+        None
     )
 )
 data['extra_files'].append(
     (
-        "zz_cardgames.rpy",
-        r"http://sp2.0721play.icu/d/MAS/MAS-PC/zz_cardgames.rpy",
-        "./cache/ddlc.zip_files/DDLC-1.1.1-pc/game",
-        "ASK_DOWNLOAD",
-        "因为历史原因，NOU小游戏的最新版未翻译，本文件会将汉化过的旧版本用于替换新版，游戏内会提示检测到rpy文件，保留即可"
+        "sp_zhcn.zip",
+        r"http://sp2.0721play.icu/d/MAS/MAS-PC/%E7%B2%BE%E7%81%B5%E5%8C%85%E6%B1%89%E5%8C%96.zip",
+        "./cache",
+        "EXTRACT_EXTRA"
     )
 )
+
 
 with open('extra_file.json', 'w', encoding = 'utf-8') as files:
     files.write(json.dumps(data))

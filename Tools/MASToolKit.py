@@ -13,6 +13,7 @@ import TLogo
 DOWNLOAD_DDLC_URL = "https://link.jscdn.cn/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBdXhYOTVIVGRJNkxtVXp5aVQ1R3ZnS2VDQkpNP2U9SGRsNUFV.zip"
 PATH = '.'#sys.path[0]
 CACHE_PATH = PATH + "/cache"
+GAME_PATH = PATH + "/game"
 MAS_OWN = "Monika-After-Story"
 MAS_REP = "MonikaModDev"
 
@@ -62,29 +63,29 @@ def tool_box():
             if name == "chs.rpa":
                 print_info('准备下载chs.rpa...')
                 try:
-                    TUtil.download(dl, CACHE_PATH, 'chs.rpa')
+                    TUtil.download(dl, GAME_PATH, 'chs.rpa')
                 except Exception as e:
                     error("下载失败：\n{}".format(e))
                     print("下载失败，准备重试...")
                     print("从github下载可能需要加速器...")
                     try:
-                        TUtil.download(dl, CACHE_PATH, 'chs.rpa')
+                        TUtil.download(dl, GAME_PATH, 'chs.rpa')
                     except Exception as e:
                         print("下载失败，查看MASToolKit.log获取更多信息")
                         raise e
             if name == 'chs_gui.rpa':
                 print_info('准备下载chs_gui.rpa...')
                 try:
-                    TUtil.download(dl, CACHE_PATH, 'chs_gui.rpa')
+                    TUtil.download(dl, GAME_PATH, 'chs_gui.rpa')
                 except Exception as e:
                     error("下载失败：\n{}".format(e))
                     print("下载失败，准备重试...")
                     print("从github下载可能需要加速器...")
                     try:
-                        TUtil.download(dl, CACHE_PATH, 'chs_gui.rpa')
+                        TUtil.download(dl, GAME_PATH, 'chs_gui.rpa')
                     except Exception as e:
                         print("下载失败，查看MASToolKit.log获取更多信息")
-                    raise 
+                        raise 
     print("===============================")
     print_info("请选择功能")
     print_info("1. 重装最新版汉化")
@@ -175,9 +176,9 @@ else:
         if name == 'spritepacks.zip':
             print('是否下载官方精灵包?（未汉化）')
             print('不下载则需要手动安装精灵包')
-            print("Y/N(默认)")
-            spdl = input().lower()
-            if spdl != 'y':
+            print("Y(默认)/N")
+            spdl = input()
+            if spdl.lower() == 'n':
                 print_info('跳过精灵包下载')
                 spdl = False
                 continue
