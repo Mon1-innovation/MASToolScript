@@ -55,8 +55,9 @@ def get_github_rate_limit():
             TUtilLog.warning('您已经到达Github请求上限，请等待一段时间后重试。')
             return False
         elif a['resources']['core']['limit'] - a['resources']['core']['used'] < 5:
-            print("您即将到达Github请求上限，请等待一段时间后重试。")
-            TUtilLog.warning('您即将到达Github请求上限，请等待一段时间后重试。')
+            print("!!您即将到达Github请求上限，本次安装可能会失败。!!")
+            TUtilLog.warning('您即将到达Github请求上限，本次安装可能会失败。')
+            
             return False
     except KeyError as e:
         TUtilLog.error("{}".format(traceback.format_exc(e)))
