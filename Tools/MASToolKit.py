@@ -14,8 +14,8 @@ DOWNLOAD_DDLC_URL = "https://link.jscdn.cn/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBdXhY
 PATH = '.'#sys.path[0]
 CACHE_PATH = PATH + "/cache"
 GAME_PATH = PATH + "/game"
-MAS_OWN = "Monika-After-Story"
-MAS_REP = "MonikaModDev"
+MAS_OWN = "Mon1-innovation"#"Monika-After-Story"
+MAS_REP = "MonikaModDev-zhCN"
 
 MON1_REP = "MAS-Simplified-Chinese-Patch"
 MON1_OWN = "Mon1-innovation"
@@ -40,14 +40,21 @@ def get_base_file():
     # 获取基础文件信息
     print_info("获取基础文件信息")
     try:
-        a = requests.get('https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
-    except:
+        a = requests.get("http://releases.0721play.top/" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
+    except Exception as e:
+        error(e)
         a = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json')
     a = a.json()
     for file in tqdm.tqdm(a["base_files"], desc="基础文件"):
         if file[0] == "ddlc.zip":
             DOWNLOAD_DDLC_URL = file[1]
-
+print_info("是否启用github release加速")
+print_info("然而如果你没有梯子，加速效果依然不明显，白花我9块钱, 只不过从连不上变成能连上而已")
+print_info("Y（默认）/N")
+a = input()
+TUtil.ENABLE_SPEED = not a.lower() == "n"
+if TUtil.ENABLE_SPEED:
+    print_info("启用基于Cloudflare Workers的github开源项目hunshcn/gh-proxy进行加速")
 
 def tool_box():
     def cn_update():
@@ -58,17 +65,22 @@ def tool_box():
         print_info('==========================================')
         time.sleep(2)
         url = TUtil.get_latest_release_dl(MON1_OWN, MON1_REP)
+
         debug(url)
         for name, dl in url:
             if name == "chs.rpa":
                 print_info('准备下载chs.rpa...')
                 try:
+                    if TUtil.ENABLE_SPEED:
+                        dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, GAME_PATH, 'chs.rpa')
                 except Exception as e:
                     error("下载失败：\n{}".format(e))
                     print("下载失败，准备重试...")
                     print("从github下载可能需要加速器...")
                     try:
+                        if TUtil.ENABLE_SPEED:
+                            dl = "http://releases.0721play.top/"+dl
                         TUtil.download(dl, GAME_PATH, 'chs.rpa')
                     except Exception as e:
                         print("下载失败，查看MASToolKit.log获取更多信息")
@@ -76,12 +88,16 @@ def tool_box():
             if name == 'chs_gui.rpa':
                 print_info('准备下载chs_gui.rpa...')
                 try:
+                    if TUtil.ENABLE_SPEED:
+                        dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, GAME_PATH, 'chs_gui.rpa')
                 except Exception as e:
                     error("下载失败：\n{}".format(e))
                     print("下载失败，准备重试...")
                     print("从github下载可能需要加速器...")
                     try:
+                        if TUtil.ENABLE_SPEED:
+                            dl = "http://releases.0721play.top/"+dl
                         TUtil.download(dl, GAME_PATH, 'chs_gui.rpa')
                     except Exception as e:
                         print("下载失败，查看MASToolKit.log获取更多信息")
@@ -120,25 +136,6 @@ else:
         pass
     info(_("未安装 MAS"))
     print(_("未安装 MAS"))
-    print('您是否想要启动第三方Github下载加速？')
-    print("不建议开启，因为第三方加速疑似寄了")
-    print('Y/N(默认)')
-    speed = input()
-    if speed.lower() != 'y':
-        print_info("您是否想设置本地代理")
-        print('Y/N(默认)')
-        speed = input()
-        if speed.lower() != 'y':
-            pass
-        else:
-            print_info('请输入代理端口号')
-            port=input()
-            TUtil.set_proxy(port)
-        pass
-    else:
-        print_info('启用由 https://fastgit.xyz/ 提供的加速服务')
-        TUtil.ENABLE_SPEED = True
-
     print(_("准备安装MAS..."))
     get_base_file()
     print("获取DDLC下载链接...")
@@ -161,13 +158,16 @@ else:
         if name == "Monika_After_Story-{}-Mod.zip".format(masver1[1:]):
             print_info('准备下载MAS...')
             try:
+                if TUtil.ENABLE_SPEED:
+                    dl = "http://releases.0721play.top/"+dl
                 TUtil.download(dl, CACHE_PATH, 'mas.zip')
             except Exception as e:
                 error("下载失败：\n{}".format(e))
-                
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
+                    if TUtil.ENABLE_SPEED:
+                        dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, CACHE_PATH, 'mas.zip')
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
@@ -184,12 +184,16 @@ else:
                 continue
             try:
                 print_info('准备下载精灵包')
+                if TUtil.ENABLE_SPEED:
+                    dl = "http://releases.0721play.top/"+dl
                 TUtil.download(dl, CACHE_PATH, 'spritepacks.zip')
             except:
                 error("下载失败：\n{}".format(e))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
+                    if TUtil.ENABLE_SPEED:
+                        dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, CACHE_PATH, 'spritepacks.zip')
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
@@ -208,12 +212,16 @@ else:
         if name == "chs.rpa":
             print_info('准备下载chs.rpa...')
             try:
+                if TUtil.ENABLE_SPEED:
+                    dl = "http://releases.0721play.top/"+dl
                 TUtil.download(dl, CACHE_PATH, 'chs.rpa')
             except Exception as e:
                 error("下载失败：\n{}".format(e))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
+                    if TUtil.ENABLE_SPEED:
+                        dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, CACHE_PATH, 'chs.rpa')
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
@@ -221,12 +229,16 @@ else:
         if name == 'chs_gui.rpa':
             print_info('准备下载chs_gui.rpa...')
             try:
+                if TUtil.ENABLE_SPEED:
+                    dl = "http://releases.0721play.top/"+dl
                 TUtil.download(dl, CACHE_PATH, 'chs_gui.rpa')
             except Exception as e:
                 error("下载失败：\n{}".format(e))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
+                    if TUtil.ENABLE_SPEED:
+                        dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, CACHE_PATH, 'chs_gui.rpa')
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")

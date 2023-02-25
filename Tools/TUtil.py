@@ -73,10 +73,10 @@ def get_latest_release_tag(own, rep):
         tag 类似于"v0.12.1"
     """
     url = requests.get(
-        "https://api.github.com/repos/{}/{}/releases/latest".format(own, rep))
+        "https://api.github.com/repos/{}/{}/releases".format(own, rep))
     url = url.json()
     try:
-        return url['tag_name']
+        return url[0]['tag_name']
     except Exception as e:
         print('遇到致命错误，请查看log获取详细信息')
         TUtilLog.error(e)
@@ -104,9 +104,9 @@ def check_update(oldver, own, rep):
                 return True
         
     url = requests.get(
-        "https://api.github.com/repos/{}/{}/releases/latest".format(own, rep))
+        "https://api.github.com/repos/{}/{}/releases".format(own, rep))
     try:
-        ver = url.json()['tag_name']
+        ver = url.json()[0]['tag_name']
         versp = ver[1:].split('.')
         if comp_version(oldver, versp):
             return ver
@@ -126,10 +126,10 @@ def get_latest_release_info(own, rep):
         md 源文件
     """
     url = requests.get(
-        "https://api.github.com/repos/{}/{}/releases/latest".format(own, rep))
+        "https://api.github.com/repos/{}/{}/releases".format(own, rep))
     url = url.json()
     try:
-        return url['body']
+        return url[0]['body']
     except Exception as e:
         TUtilLog.error(e)
         return "更新信息获取失败"
@@ -147,9 +147,9 @@ def get_latest_release_dl(own, rep):
         (文件名, 下载链接)
     """
     url = requests.get(
-        "https://api.github.com/repos/{}/{}/releases/latest".format(own, rep))
+        "https://api.github.com/repos/{}/{}/releases".format(own, rep))
     url = url.json()
-    assets = url['assets']
+    assets = url[0]['assets']
     result = []
     for items in assets:
         result.append((items['name'], items['browser_download_url']))
@@ -171,12 +171,7 @@ def mkdir(str):
 
 
 def download(url, path, name):
-    if ENABLE_SPEED:
-        url = url.replace('https://github.com/',
-                          'https://download.fastgit.org/')
-        url = url.replace('https://raw.githubusercontent.com/',
-                          'https://raw.fastgit.org/')
-        TUtilLog.debug("request.get: '{}'".format(url))
+    TUtilLog.debug("request.get: '{}'".format(url))
     if not os.path.exists(path):   # 看是否有该文件夹，没有则创建文件夹
         os.mkdir(path)
     failtime=5

@@ -5,6 +5,7 @@ if __name__ == '__main__':
         print("--按下回车后退出--")
         input()
         TUtil.tool_clear()
+
     except Exception as e:
         TUtil.print_info("=========================================")
         TUtil.print_info('发生异常，MASTookKit即将退出...')
@@ -12,6 +13,7 @@ if __name__ == '__main__':
         TUtil.print_info("=========================================")
         TUtil.print_info("异常原因：{}".format(e))
         TUtilLog.exception() 
+        
         print("--按下回车后退出--")
         input()
         TUtil.tool_clear()
