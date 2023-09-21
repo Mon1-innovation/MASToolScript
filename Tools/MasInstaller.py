@@ -18,4 +18,4 @@ if __name__ == '__main__':
         input()
         TUtil.tool_clear()
         
-        #py C:\users\Penci\appdata\local\programs\python\python311\lib\site-packages\pyinstaller\__main__.py -F .\Tools\MasInstaller.py
+        #pyinstaller -F .\Tools\MasInstaller.py

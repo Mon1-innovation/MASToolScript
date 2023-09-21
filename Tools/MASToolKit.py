@@ -187,7 +187,7 @@ else:
                 if TUtil.ENABLE_SPEED:
                     dl = "http://releases.0721play.top/"+dl
                 TUtil.download(dl, CACHE_PATH, 'spritepacks.zip')
-            except:
+            except Exception as e:
                 error("下载失败：\n{}".format(e))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
@@ -254,7 +254,8 @@ else:
     
     
     print_info('安装MAS...')
-    TUtil.copy_dir(CACHE_PATH + '/mas.zip_files', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc')
+    #TUtil.copy_dir(CACHE_PATH + '/mas.zip_files', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc')
+    TUtil.dir_check(CACHE_PATH + '/mas.zip', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc')
     print_info('安装MAS汉化补丁...')
     TUtil.copy(CACHE_PATH + '/chs.rpa', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc/game')
     TUtil.copy(CACHE_PATH + '/chs_gui.rpa', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc/game')

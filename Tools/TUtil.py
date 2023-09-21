@@ -403,6 +403,10 @@ def copy_dir_m(dirs, file_name, path):
         return True
     else:
         if os.path.isfile(file_name):
+            if file_name in ['CustomIconMac.icns', 'CustomIconWindows.ico', 'README.html']:
+                shutil.move(file_name, os.path.join(
+                    path + "/"))
+                return True
             if file_name.find('rpy') != -1:  # 如果是rpy文件
                 if not os.path.exists(path + "/game/Submods/UnGroupScripts"):
                     os.mkdir(path + "/game/Submods/UnGroupScripts")

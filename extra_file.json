@@ -20,7 +20,7 @@
         ],
         [
             "sp_zhcn.zip",
-            "http://sp2.0721play.icu/d/MAS/MAS-PC/%E7%B2%BE%E7%81%B5%E5%8C%85%E6%B1%89%E5%8C%96.zip",
+            "https://github.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/raw/main/%E7%B2%BE%E7%81%B5%E5%8C%85%E6%B1%89%E5%8C%96.zip",
             "./cache",
             "EXTRACT_EXTRA"
         ]
