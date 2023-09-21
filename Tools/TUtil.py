@@ -172,6 +172,9 @@ def mkdir(str):
 
 
 def download(url, path, name):
+    if ENABLE_SPEED:
+        if ("github.com" in url or "raw.githubusercontent.com" in url) and "0721play.top" not in url:
+            url = "http://releases.0721play.top/" + url
     TUtilLog.debug("request.get: '{}'".format(url))
     if not os.path.exists(path):   # 看是否有该文件夹，没有则创建文件夹
         os.mkdir(path)
@@ -180,9 +183,12 @@ def download(url, path, name):
         try:
             response = requests.get(url, stream=True)
             TUtilLog.debug(response.headers) # 打印查看基本头信息
-            data_size=int(response.headers['Content-Length'])/1024/1024 # 字节/1024/1024=MB
+            if 'Content-Length' in response.headers:
+                data_size=int(response.headers['Content-Length'])/1024/1024 # 字节/1024/1024=MB
+            else:
+                data_size=None
             with open(os.path.join(path, name),'wb') as f:
-                for data in tqdm(iterable=response.iter_content(1024*1024),total=int(data_size+1),desc=name,unit='MB'):
+                for data in tqdm(iterable=response.iter_content(1024*1024),total=int(data_size+1) if data_size else None,desc=name,unit='MB'):
                     f.write(data)
             break
         except Exception as e:
@@ -191,7 +197,6 @@ def download(url, path, name):
             failtime-=1
             if failtime<0:
                 raise Exception("资源获取失败！请稍后再试！")
-            continue
 
 
 def tool_clear():

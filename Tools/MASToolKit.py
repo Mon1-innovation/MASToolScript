@@ -220,6 +220,7 @@ else:
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
                     error("下载失败：\n{}".format(e))
+                    TUtilLog.warning("{}".format(traceback.format_exc(e)))
                     print_info('跳过精灵包下载')
                     break
     print_info('准备下载汉化补丁')
@@ -246,6 +247,7 @@ else:
                         dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, CACHE_PATH, 'chs.rpa')
                 except Exception as e:
+                    TUtilLog.warning("{}".format(traceback.format_exc(e)))
                     print("下载失败，查看MASToolKit.log获取更多信息")
                     raise e
         if name == 'chs_gui.rpa':
@@ -263,6 +265,7 @@ else:
                         dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, CACHE_PATH, 'chs_gui.rpa')
                 except Exception as e:
+                    TUtilLog.warning("{}".format(traceback.format_exc(e)))
                     print("下载失败，查看MASToolKit.log获取更多信息")
                     raise 
   
@@ -289,7 +292,7 @@ else:
         TUtil.get_extra_file(FileData)
     except Exception as e:
         print_info("安装额外内容失败, 跳过")
-        TUtilLog.warning(e)
+        TUtilLog.warning("{}".format(traceback.format_exc(e)))
     print_info('移出缓存文件夹...')
     TUtil.copy_dir(CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc', PATH)
     print_info('MAS安装完成~')
