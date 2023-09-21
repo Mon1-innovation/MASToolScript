@@ -10,7 +10,7 @@ import TUtilLog
 from TUtilLog import info, debug, warning, error
 import TTranslation
 import TLogo
-DOWNLOAD_DDLC_URL = "https://link.jscdn.cn/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBdXhYOTVIVGRJNkxtVXp5aVQ1R3ZnS2VDQkpNP2U9SGRsNUFV.zip"
+DOWNLOAD_DDLC_URL = None
 PATH = '.'#sys.path[0]
 CACHE_PATH = PATH + "/cache"
 GAME_PATH = PATH + "/game"
@@ -35,6 +35,17 @@ mas_installed = TUtil.is_exists(PATH + "/game/masrun")
 #print("1 - 简体中文 (Default)")
 #print("2 - English")
 #
+import requests
+
+def check_link_access(link):
+    try:
+        response = requests.get(link)
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+    except Exception as e:
+        return False
 def get_base_file():
     global DOWNLOAD_DDLC_URL
     # 获取基础文件信息
@@ -47,7 +58,14 @@ def get_base_file():
     a = a.json()
     for file in tqdm.tqdm(a["base_files"], desc="基础文件"):
         if file[0] == "ddlc.zip":
-            DOWNLOAD_DDLC_URL = file[1]
+            if (check_link_access(file[1])):
+                DOWNLOAD_DDLC_URL = file[1]
+                print_info("DDLC链接为：{}".format(file[1]))
+                break
+            else:
+                print_info("访问失败, 正在更换备用链接")
+    if DOWNLOAD_DDLC_URL == None:
+        raise Exception("所有DDLC链接全部尝试失败, 无法进行安装!")
 print_info("是否启用github release加速")
 print_info("然而如果你没有梯子，加速效果依然不明显，白花我9块钱, 只不过从连不上变成能连上而已")
 print_info("Y（默认）/N")
