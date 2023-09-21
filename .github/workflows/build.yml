@@ -13,4 +13,4 @@ jobs:
           spec: 'Tools/MasInstaller.py'
           requirements: 'requirements.txt'
           upload_exe_with_name: 'MasInstaller'
-          options: --onefile, --name "MasInstaller", --windowed, 
+          options: --onefile, --name "MasInstaller", 
