@@ -2,16 +2,12 @@
     "base_files": [
         [
             "ddlc.zip",
-            "https://link.jscdn.cn/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBdXhYOTVIVGRJNkxtVXp5aVQ1R3ZnS2VDQkpNP2U9SGRsNUFV.zip"
-        ],
-        [
-            "ddlc.zip",
             "https://disk.monika.love/api/v3/file/get/2795/ddlc-win.zip?sign=HB_y2aCFJt_sgz67a3yBHODv3i97N1TxBpc2k_cfRxM%3D%3A0"
         ],
         [
             "ddlc.zip",
-            "http://sp2.0721play.icu/d/MAS/DDLC/ddlc-win.zip"
-        ],
+            "https://link.jscdn.cn/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBdXhYOTVIVGRJNkxtVXp5aVQ1R3ZnS2VDQkpNP2U9SGRsNUFV.zip"
+        ]
     ],
     "extra_files": [
         [
