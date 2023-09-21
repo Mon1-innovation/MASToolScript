@@ -29,7 +29,7 @@ def print_info(str):
 TUtil.mkdir('./CACHE')
 
 mas_installed = TUtil.is_exists(PATH + "/game/masrun")
-
+FileData = None
 #print("选择语言/Select Language")
 #print("")
 #print("1 - 简体中文 (Default)")
@@ -39,40 +39,42 @@ import requests
 
 def check_link_access(link):
     try:
-        response = requests.get(link)
-        if response.status_code == 200:
+        response = requests.head(link)
+        if response.status_code in [200, 301, 302]:
             return True
         else:
             return False
     except Exception as e:
+        error(e.__str__())
         return False
 def get_base_file():
     global DOWNLOAD_DDLC_URL
+    global FileData
     # 获取基础文件信息
     print_info("获取基础文件信息")
     try:
-        a = requests.get("http://releases.0721play.top/" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
+        FileData = requests.get("http://releases.0721play.top/" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
     except Exception as e:
         error(e)
-        a = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json')
-    a = a.json()
-    for file in tqdm.tqdm(a["base_files"], desc="基础文件"):
+        FileData = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json')
+    FileData = FileData.json()
+    for file in tqdm.tqdm(FileData["base_files"], desc="基础文件"):
         if DOWNLOAD_DDLC_URL != None:
             continue
         if file[0] == "ddlc.zip":
             if (check_link_access(file[1])):
                 DOWNLOAD_DDLC_URL = file[1]
-                print_info("DDLC链接为：{}".format(file[1]))
+                print_info("设置DDLC链接为：{}".format(file[1]))
                 continue
             else:
-                print_info("访问失败, 正在更换备用链接")
+                print_info("访问失败, 正在尝试更换备用链接")
     if DOWNLOAD_DDLC_URL == None:
         raise Exception("所有DDLC链接全部尝试失败, 无法进行安装!")
-print_info("是否启用github release加速")
-print_info("然而如果你没有梯子，加速效果依然不明显，白花我9块钱, 只不过从连不上变成能连上而已")
-print_info("Y（默认）/N")
-a = input()
-TUtil.ENABLE_SPEED = not a.lower() == "n"
+#print_info("是否启用github release加速")
+#print_info("然而如果你没有梯子，加速效果依然不明显，白花我9块钱, 只不过从连不上变成能连上而已")
+#print_info("Y（默认）/N")
+#a = input()
+TUtil.ENABLE_SPEED = True
 if TUtil.ENABLE_SPEED:
     print_info("启用基于Cloudflare Workers的github开源项目hunshcn/gh-proxy进行加速")
 
@@ -157,8 +159,8 @@ else:
     info(_("未安装 MAS"))
     print(_("未安装 MAS"))
     print(_("准备安装MAS..."))
-    get_base_file()
     print("获取DDLC下载链接...")
+    get_base_file()
     info("开始下载DDLC: {}".format(CACHE_PATH))
     TUtil.download(DOWNLOAD_DDLC_URL, CACHE_PATH, 'ddlc.zip')
     print('开始下载MAS最新版本')
@@ -284,7 +286,7 @@ else:
         print_info('安装精灵包...')
         TUtil.dir_check(CACHE_PATH + '/spritepacks.zip', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc')
     try:
-        TUtil.get_extra_file()
+        TUtil.get_extra_file(FileData)
     except Exception as e:
         print_info("安装额外内容失败, 跳过")
         TUtilLog.warning(e)

@@ -470,14 +470,17 @@ def check_json(filename, path, movedir=None):
                     "在尝试获取礼物文件名时出现异常，可能未设置giftname，跳过该文件：'{}'".format(json_file))
                 continue
 
-def get_extra_file():
+def get_extra_file(data = None):
     # 下载额外内容仅在第一次安装时进行
     print_info("下载额外内容")
-    try:
-        a = requests.get('https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
-    except:
-        a = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json')    
-    a = a.json()
+    if not data:
+        try:
+            a = requests.get("http://releases.0721play.top/" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
+        except:
+            a = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json')    
+            a = a.json()
+    else:
+        a = data
     for file in tqdm(a["extra_files"], desc="额外内容"):
         if file[3] == "EXTRACT_EXTRA":
             download(file[1], file[2], file[0])
