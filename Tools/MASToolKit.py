@@ -57,11 +57,13 @@ def get_base_file():
         a = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json')
     a = a.json()
     for file in tqdm.tqdm(a["base_files"], desc="基础文件"):
+        if DOWNLOAD_DDLC_URL != None:
+            continue
         if file[0] == "ddlc.zip":
             if (check_link_access(file[1])):
                 DOWNLOAD_DDLC_URL = file[1]
                 print_info("DDLC链接为：{}".format(file[1]))
-                break
+                continue
             else:
                 print_info("访问失败, 正在更换备用链接")
     if DOWNLOAD_DDLC_URL == None:
