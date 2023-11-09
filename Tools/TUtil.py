@@ -47,7 +47,7 @@ def un_zip(file_name):
 
 
 def get_github_rate_limit():
-    a = requests.get('https://api.github.com/rate_limit')
+    a = requests.get('https://api.github.com/rate_limit', verify=False)
     a = a.json()
     try:
         if a['resources']['core']['limit'] - a['resources']['core']['used'] < 1:
@@ -74,7 +74,7 @@ def get_latest_release_tag(own, rep):
         tag 类似于"v0.12.1"
     """
     url = requests.get(
-        "https://api.github.com/repos/{}/{}/releases".format(own, rep))
+        "https://api.github.com/repos/{}/{}/releases".format(own, rep), verify=False)
     url = url.json()
     try:
         return url[0]['tag_name']
@@ -105,7 +105,7 @@ def check_update(oldver, own, rep):
                 return True
         
     url = requests.get(
-        "https://api.github.com/repos/{}/{}/releases".format(own, rep))
+        "https://api.github.com/repos/{}/{}/releases".format(own, rep), verify=False)
     try:
         ver = url.json()[0]['tag_name']
         versp = ver[1:].split('.')
@@ -127,7 +127,7 @@ def get_latest_release_info(own, rep):
         md 源文件
     """
     url = requests.get(
-        "https://api.github.com/repos/{}/{}/releases".format(own, rep))
+        "https://api.github.com/repos/{}/{}/releases".format(own, rep), verify=False)
     url = url.json()
     try:
         return url[0]['body']
@@ -148,7 +148,7 @@ def get_latest_release_dl(own, rep):
         (文件名, 下载链接)
     """
     url = requests.get(
-        "https://api.github.com/repos/{}/{}/releases".format(own, rep))
+        "https://api.github.com/repos/{}/{}/releases".format(own, rep), verify=False)
     url = url.json()
     assets = url[0]['assets']
     result = []
@@ -181,7 +181,7 @@ def download(url, path, name):
     failtime=5
     while True:
         try:
-            response = requests.get(url, stream=True)
+            response = requests.get(url, stream=True, verify=False)
             TUtilLog.debug(response.headers) # 打印查看基本头信息
             if 'Content-Length' in response.headers:
                 data_size=int(response.headers['Content-Length'])/1024/1024 # 字节/1024/1024=MB
@@ -480,9 +480,9 @@ def get_extra_file(data = None):
     print_info("下载额外内容")
     if not data:
         try:
-            a = requests.get("http://releases.0721play.top/" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
+            a = requests.get("http://releases.0721play.top/" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json', verify=False)
         except:
-            a = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json')    
+            a = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json', verify=False)    
             a = a.json()
     else:
         a = data

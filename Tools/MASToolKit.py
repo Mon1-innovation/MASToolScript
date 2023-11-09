@@ -53,10 +53,10 @@ def get_base_file():
     # 获取基础文件信息
     print_info("获取基础文件信息")
     try:
-        FileData = requests.get("http://releases.0721play.top/" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json')
+        FileData = requests.get("http://releases.0721play.top/" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json', verify=False)
     except Exception as e:
         error(e)
-        FileData = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json')
+        FileData = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json', verify=False)
     FileData = FileData.json()
     for file in tqdm.tqdm(FileData["base_files"], desc="基础文件"):
         if DOWNLOAD_DDLC_URL != None:
