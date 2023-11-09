@@ -8,13 +8,7 @@ data['base_files'] = []
 data['base_files'].append(
     (
         "ddlc.zip",
-        "http://sp2.0721play.icu/d/MAS/DDLC/ddlc-win.zip"
-    )
-)
-data['base_files'].append(
-    (
-        "ddlc.zip",
-        "https://disk.monika.love/api/v3/file/get/2795/ddlc-win.zip?sign=HB_y2aCFJt_sgz67a3yBHODv3i97N1TxBpc2k_cfRxM%3D%3A0"
+        "https://disk.edgemonix.top:28991/api/v3/slave/source/0/dXBsb2Fkcy8xL-WbvuW6ii8xX0hKN0pJUlFuX2RkbGMtd2luLnppcA/ddlc-win.zip?sign=inAyMbOxcEvWsebUbdazuGsEfK0iDOmter8KXASzJ1o%3D%3A0"
     )
 )
 data['base_files'].append(
@@ -23,6 +17,7 @@ data['base_files'].append(
         "https://link.jscdn.cn/1drv/aHR0cHM6Ly8xZHJ2Lm1zL3UvcyFBdXhYOTVIVGRJNkxtVXp5aVQ1R3ZnS2VDQkpNP2U9SGRsNUFV.zip"
     )
 )
+
 data['extra_files'] = []
     # 名称, 下载链接, 下载到相对路径, 额外操作
     # 额外操作：
