@@ -6,6 +6,8 @@ import os
 import shutil
 import TUtilLog
 import requests
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import time
 import traceback
 import zipfile
