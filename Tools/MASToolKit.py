@@ -177,19 +177,18 @@ else:
     url = TUtil.get_latest_release_dl(MAS_OWN, MAS_REP)
     debug(url)
     for name, dl in url:
+        if TUtil.ENABLE_SPEED:
+            dl = "http://releases.0721play.top/"+dl
+
         if name == "Monika_After_Story-{}-Mod.zip".format(masver1[1:]):
             print_info('准备下载MAS...')
             try:
-                if TUtil.ENABLE_SPEED:
-                    dl = "http://releases.0721play.top/"+dl
                 TUtil.download(dl, CACHE_PATH, 'mas.zip')
             except Exception as e:
                 error("下载失败：\n{}".format(e))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
-                    if TUtil.ENABLE_SPEED:
-                        dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, CACHE_PATH, 'mas.zip')
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
@@ -206,16 +205,13 @@ else:
                 continue
             try:
                 print_info('准备下载精灵包')
-                if TUtil.ENABLE_SPEED:
-                    dl = "http://releases.0721play.top/"+dl
+                
                 TUtil.download(dl, CACHE_PATH, 'spritepacks.zip')
             except Exception as e:
                 error("下载失败：\n{}".format(e))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
-                    if TUtil.ENABLE_SPEED:
-                        dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, CACHE_PATH, 'spritepacks.zip')
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
@@ -232,37 +228,34 @@ else:
     url = TUtil.get_latest_release_dl(MON1_OWN, MON1_REP)
     debug(url)
     for name, dl in url:
+        if TUtil.ENABLE_SPEED:
+            dl = "http://releases.0721play.top/"+dl
+
         if name == "chs.rpa":
             print_info('准备下载chs.rpa...')
+
             try:
-                if TUtil.ENABLE_SPEED:
-                    dl = "http://releases.0721play.top/"+dl
                 TUtil.download(dl, CACHE_PATH, 'chs.rpa')
             except Exception as e:
                 error("下载失败：\n{}".format(e))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
-                    if TUtil.ENABLE_SPEED:
-                        dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, CACHE_PATH, 'chs.rpa')
                 except Exception as e:
                     TUtilLog.warning("{}".format(traceback.format_exc(e)))
                     print("下载失败，查看MASToolKit.log获取更多信息")
                     raise e
         if name == 'chs_gui.rpa':
+            
             print_info('准备下载chs_gui.rpa...')
             try:
-                if TUtil.ENABLE_SPEED:
-                    dl = "http://releases.0721play.top/"+dl
                 TUtil.download(dl, CACHE_PATH, 'chs_gui.rpa')
             except Exception as e:
                 error("下载失败：\n{}".format(e))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
-                    if TUtil.ENABLE_SPEED:
-                        dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, CACHE_PATH, 'chs_gui.rpa')
                 except Exception as e:
                     TUtilLog.warning("{}".format(traceback.format_exc(e)))
