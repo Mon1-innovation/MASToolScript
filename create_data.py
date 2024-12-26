@@ -50,6 +50,15 @@ data['extra_files'].append(
     )
 )
 
+data['extra_files'].append(
+    (
+        "e4_patch.zip",
+        r"http://sp2.0721play.icu/d/MAS/MAS-PC/F4_code.zip",
+        "./cache",
+        "EXTRACT_EXTRA"
+    )
+)
+
 
 with open('extra_file.json', 'w', encoding = 'utf-8') as files:
     files.write(json.dumps(data))
