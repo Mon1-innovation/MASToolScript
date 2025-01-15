@@ -45,7 +45,7 @@ def check_link_access(link):
         else:
             return False
     except Exception as e:
-        error(e.__str__())
+        error(traceback.format_exc())
         return False
 def get_base_file():
     global DOWNLOAD_DDLC_URL
@@ -55,7 +55,7 @@ def get_base_file():
     try:
         FileData = requests.get("http://releases.0721play.top/" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json', verify=False)
     except Exception as e:
-        error(e)
+        error(traceback.format_exc())
         FileData = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json', verify=False)
     FileData = FileData.json()
     for file in tqdm.tqdm(FileData["base_files"], desc="基础文件"):
@@ -97,7 +97,7 @@ def tool_box():
                         dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, GAME_PATH, 'chs.rpa')
                 except Exception as e:
-                    error("下载失败：\n{}".format(e))
+                    error("下载失败：\n{}".format(traceback.format_exc()))
                     print("下载失败，准备重试...")
                     print("从github下载可能需要加速器...")
                     try:
@@ -114,7 +114,7 @@ def tool_box():
                         dl = "http://releases.0721play.top/"+dl
                     TUtil.download(dl, GAME_PATH, 'chs_gui.rpa')
                 except Exception as e:
-                    error("下载失败：\n{}".format(e))
+                    error("下载失败：\n{}".format(traceback.format_exc()))
                     print("下载失败，准备重试...")
                     print("从github下载可能需要加速器...")
                     try:
@@ -185,14 +185,14 @@ else:
             try:
                 TUtil.download(dl, CACHE_PATH, 'mas.zip')
             except Exception as e:
-                error("下载失败：\n{}".format(e))
+                error("下载失败：\n{}".format(traceback.format_exc()))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
                     TUtil.download(dl, CACHE_PATH, 'mas.zip')
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
-                    error("下载失败：\n{}".format(e))
+                    error("下载失败：\n{}".format(traceback.format_exc()))
                     TUtil.tool_clear()
         if name == 'spritepacks.zip':
             print('是否下载官方精灵包?（未汉化）')
@@ -208,15 +208,15 @@ else:
                 
                 TUtil.download(dl, CACHE_PATH, 'spritepacks.zip')
             except Exception as e:
-                error("下载失败：\n{}".format(e))
+                error("下载失败：\n{}".format(traceback.format_exc()))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
                     TUtil.download(dl, CACHE_PATH, 'spritepacks.zip')
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
-                    error("下载失败：\n{}".format(e))
-                    TUtilLog.warning("{}".format(traceback.format_exc(e)))
+                    error("下载失败：\n{}".format(traceback.format_exc()))
+                    TUtilLog.warning("{}".format(traceback.format_exc()))
                     print_info('跳过精灵包下载')
                     break
     print_info('准备下载汉化补丁')
@@ -237,13 +237,13 @@ else:
             try:
                 TUtil.download(dl, CACHE_PATH, 'chs.rpa')
             except Exception as e:
-                error("下载失败：\n{}".format(e))
+                error("下载失败：\n{}".format(traceback.format_exc()))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
                     TUtil.download(dl, CACHE_PATH, 'chs.rpa')
                 except Exception as e:
-                    TUtilLog.warning("{}".format(traceback.format_exc(e)))
+                    TUtilLog.error("{}".format(traceback.format_exc(e)))
                     print("下载失败，查看MASToolKit.log获取更多信息")
                     raise e
         if name == 'chs_gui.rpa':
@@ -252,7 +252,7 @@ else:
             try:
                 TUtil.download(dl, CACHE_PATH, 'chs_gui.rpa')
             except Exception as e:
-                error("下载失败：\n{}".format(e))
+                error("下载失败：\n{}".format(traceback.format_exc()))
                 print("下载失败，准备重试...")
                 print("从github下载可能需要加速器...")
                 try:
