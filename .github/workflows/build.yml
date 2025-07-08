@@ -7,7 +7,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Create Executable
-        uses: Martin005/pyinstaller-action@v1.2.0
+        uses: theSanguss/pyinstaller-action@patch-1
         with:
           python_ver: '3.9'
           spec: 'Tools/MasInstaller.py'
