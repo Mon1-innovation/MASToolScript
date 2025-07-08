@@ -234,6 +234,11 @@ def download(url, path, name, chunk_size=1024*1024, thread_count=8):
                                     f.write(chunk)
 
                 try:
+                    # 大小<1MB 直接单线程下载
+                    if file_size < chunk_size:
+                        print("文件小于最小分块大小，使用单线程下载...")
+                        single_thread_download(final_url, file_path, name, chunk_size)
+                        return
                     part_size = file_size // thread_count
                     ranges = [
                         (i * part_size, (i + 1) * part_size - 1 if i < thread_count - 1 else file_size - 1, i)
