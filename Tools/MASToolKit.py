@@ -53,7 +53,7 @@ def get_base_file():
     # 获取基础文件信息
     print_info("获取基础文件信息")
     try:
-        FileData = requests.get("http://releases.0721play.top/" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json', verify=False)
+        FileData = requests.get("http://releases.0721play.top/" if TUtil.ENABLE_SPEED else "" + 'https://raw.githubusercontent.com/Mon1-innovation/MAS-Simplified-Chinese-Patch/main/extra_file.json', verify=False)
     except Exception as e:
         error(traceback.format_exc())
         FileData = requests.get('http://sp2.0721play.icu/d/MAS/MAS-PC/extra_file.json', verify=False)
@@ -70,11 +70,14 @@ def get_base_file():
                 print_info("访问失败, 正在尝试更换备用链接")
     if DOWNLOAD_DDLC_URL == None:
         raise Exception("所有DDLC链接全部尝试失败, 无法进行安装!")
-#print_info("是否启用github release加速")
-#print_info("然而如果你没有梯子，加速效果依然不明显，白花我9块钱, 只不过从连不上变成能连上而已")
-#print_info("Y（默认）/N")
-#a = input()
-TUtil.ENABLE_SPEED = True
+print_info("是否启用github release加速")
+print_info("cloudflare workers加速被墙了, 所以应该是用不了的.")
+print_info("Y/N(默认)")
+a = input()
+if a.lower() == 'y':
+    TUtil.ENABLE_SPEED = True
+else:
+    TUtil.ENABLE_SPEED = False
 if TUtil.ENABLE_SPEED:
     print_info("启用基于Cloudflare Workers的github开源项目hunshcn/gh-proxy进行加速")
 
@@ -219,7 +222,7 @@ else:
                     TUtilLog.warning("{}".format(traceback.format_exc()))
                     print_info('跳过精灵包下载')
                     break
-    print_info('准备下载汉化补丁')
+    #print_info('准备下载汉化补丁')
     print_info("汉化补丁当前版本：{}".format(TUtil.get_latest_release_tag(MON1_OWN, MON1_REP)))
     print_info('==========================================')
     print_info('更新说明：\n\n' + TUtil.get_latest_release_info(MON1_OWN, MON1_REP))
@@ -274,9 +277,9 @@ else:
     print_info('安装MAS...')
     #TUtil.copy_dir(CACHE_PATH + '/mas.zip_files', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc')
     TUtil.dir_check(CACHE_PATH + '/mas.zip', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc')
-    print_info('安装MAS汉化补丁...')
-    TUtil.copy(CACHE_PATH + '/chs.rpa', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc/game')
-    TUtil.copy(CACHE_PATH + '/chs_gui.rpa', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc/game')
+    #print_info('安装MAS汉化补丁...')
+    #TUtil.copy(CACHE_PATH + '/chs.rpa', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc/game')
+    #TUtil.copy(CACHE_PATH + '/chs_gui.rpa', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc/game')
     if TUtil.is_exists(CACHE_PATH + '/spritepacks.zip'):
         TUtil.un_zip(CACHE_PATH + '/spritepacks.zip')
         print_info('安装精灵包...')

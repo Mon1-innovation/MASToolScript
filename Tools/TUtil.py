@@ -12,6 +12,7 @@ import time
 import traceback
 import zipfile
 from tqdm import tqdm
+import threading
 
 
 
@@ -172,35 +173,119 @@ def mkdir(str):
 
 # https://blog.csdn.net/weixin_43347550/article/details/105248223
 
+import os
+import requests
+import traceback
+from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-def download(url, path, name):
+def single_thread_download(final_url, file_path, name, chunk_size=1024*1024):
+    print("开始单线程普通下载...")
+    with requests.get(final_url, stream=True, verify=False, allow_redirects=True) as response:
+        if 'Content-Length' in response.headers:
+            data_size = int(response.headers['Content-Length']) / 1024 / 1024
+        else:
+            data_size = None
+        with open(file_path, 'wb') as f:
+            for data in tqdm(
+                iterable=response.iter_content(chunk_size),
+                total=int(data_size + 1) if data_size else None,
+                desc=name,
+                unit='MB'
+            ):
+                f.write(data)
+    print(f"单线程下载完成，文件已保存至: {file_path}")
+
+def download(url, path, name, chunk_size=1024*1024, thread_count=8):
     if ENABLE_SPEED:
         if ("github.com" in url or "raw.githubusercontent.com" in url) and "0721play.top" not in url:
             url = "http://releases.0721play.top/" + url
-    TUtilLog.debug("request.get: '{}'".format(url))
-    if not os.path.exists(path):   # 看是否有该文件夹，没有则创建文件夹
-        os.mkdir(path)
-    failtime=5
+    TUtilLog.debug("请求下载链接: '{}'".format(url))
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+    file_path = os.path.join(path, name)
+    failtime = 5
+
     while True:
         try:
-            response = requests.get(url, stream=True, verify=False)
-            TUtilLog.debug(response.headers) # 打印查看基本头信息
-            if 'Content-Length' in response.headers:
-                data_size=int(response.headers['Content-Length'])/1024/1024 # 字节/1024/1024=MB
+            head_resp = requests.head(url, verify=False, allow_redirects=True)
+            file_size = int(head_resp.headers.get('Content-Length', 0))
+            accept_ranges = head_resp.headers.get('Accept-Ranges', '').lower()
+            final_url = head_resp.url
+            TUtilLog.debug(f"HEAD 响应头: {head_resp.headers}")
+            TUtilLog.debug(f"最终跳转后的下载链接: {final_url}")
+
+            if accept_ranges == 'bytes' and file_size > 0:
+                print(f"服务器支持断点续传，尝试多线程下载（{thread_count}线程）")
+
+                def download_chunk(start, end, idx):
+                    headers = {'Range': f'bytes={start}-{end}'}
+                    part_file = f"{file_path}.part{idx}"
+                    with requests.get(final_url, headers=headers, stream=True, verify=False, timeout=30) as r:
+                        if r.status_code != 206:
+                            raise Exception(f"服务器未正确返回分段内容，状态码: {r.status_code}")
+                        if 'Content-Range' not in r.headers:
+                            raise Exception("服务器未返回 Content-Range，可能不支持分段下载")
+                        with open(part_file, 'wb') as f:
+                            for chunk in r.iter_content(chunk_size=chunk_size):
+                                if chunk:
+                                    f.write(chunk)
+
+                try:
+                    part_size = file_size // thread_count
+                    ranges = [
+                        (i * part_size, (i + 1) * part_size - 1 if i < thread_count - 1 else file_size - 1, i)
+                        for i in range(thread_count)
+                    ]
+
+                    with ThreadPoolExecutor(max_workers=thread_count) as executor:
+                        futures = {executor.submit(download_chunk, start, end, idx): idx for start, end, idx in ranges}
+
+                        pbar = tqdm(total=file_size, unit='B', unit_scale=True, desc=name)
+                        try:
+                            while True:
+                                downloaded = sum(
+                                    os.path.getsize(f"{file_path}.part{i}") if os.path.exists(f"{file_path}.part{i}") else 0
+                                    for i in range(thread_count)
+                                )
+                                pbar.n = downloaded
+                                pbar.refresh()
+                                if all(f.done() for f in futures):
+                                    break
+                        finally:
+                            pbar.close()
+
+                        for future in futures:
+                            if future.exception():
+                                raise future.exception()
+
+                    # 合并
+                    print("所有分段下载完成，开始合并文件...")
+                    with open(file_path, 'wb') as outfile:
+                        for i in range(thread_count):
+                            part_file = f"{file_path}.part{i}"
+                            with open(part_file, 'rb') as infile:
+                                outfile.write(infile.read())
+                            os.remove(part_file)
+                    print(f"下载完成，文件已保存至: {file_path}")
+
+                except Exception as e:
+                    print(f"多线程下载失败: {e}\n自动切换到单线程普通下载...")
+                    single_thread_download(final_url, file_path, name, chunk_size)
+
             else:
-                data_size=None
-            with open(os.path.join(path, name),'wb') as f:
-                for data in tqdm(iterable=response.iter_content(1024*1024),total=int(data_size+1) if data_size else None,desc=name,unit='MB'):
-                    f.write(data)
+                # 直接单线程
+                single_thread_download(final_url, file_path, name, chunk_size)
+
             break
         except Exception as e:
-            print('出现异常!自动重试中...')
-            TUtilLog.warning("{}".format(traceback.format_exc(e)))
-            failtime-=1
-            if failtime<0:
+            print('出现异常! 自动重试中...')
+            TUtilLog.warning("{}".format(traceback.format_exc()))
+            failtime -= 1
+            if failtime < 0:
                 raise Exception("资源获取失败！请稍后再试！")
-
-
 def tool_clear():
     import shutil
     try:
