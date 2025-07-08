@@ -278,8 +278,12 @@ else:
     #TUtil.copy_dir(CACHE_PATH + '/mas.zip_files', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc')
     TUtil.dir_check(CACHE_PATH + '/mas.zip', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc')
     #print_info('安装MAS汉化补丁...')
-    #TUtil.copy(CACHE_PATH + '/chs.rpa', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc/game')
-    #TUtil.copy(CACHE_PATH + '/chs_gui.rpa', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc/game')
+    if TUtil.is_exists(CACHE_PATH + '/chs.rpa'):
+        print_info('安装汉化补丁...')
+        TUtil.copy(CACHE_PATH + '/chs.rpa', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc/game')
+    if TUtil.is_exists(CACHE_PATH + '/chs_gui.rpa'):
+        print_info('安装字体...')
+        TUtil.copy(CACHE_PATH + '/chs_gui.rpa', CACHE_PATH + '/ddlc.zip_files/DDLC-1.1.1-pc/game')
     if TUtil.is_exists(CACHE_PATH + '/spritepacks.zip'):
         TUtil.un_zip(CACHE_PATH + '/spritepacks.zip')
         print_info('安装精灵包...')

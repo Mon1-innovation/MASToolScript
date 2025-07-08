@@ -52,8 +52,8 @@ data['extra_files'].append(
 
 data['extra_files'].append(
     (
-        "e4_patch.zip",
-        r"http://sp2.0721play.icu/d/MAS/MAS-PC/F4_code.zip",
+        "chinese_patch.zip",
+        r"http://sp2.0721play.icu/d/MAS/MAS-PC/ChinesePatch.zip",
         "./cache",
         "EXTRACT_EXTRA"
     )
