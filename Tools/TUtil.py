@@ -286,12 +286,20 @@ def download(url, path, name, chunk_size=1024*1024, thread_count=8):
             failtime -= 1
             if failtime < 0:
                 raise Exception("资源获取失败！请稍后再试！")
-def tool_clear():
+def tool_clear(ask = False):
     import shutil
+    clear = False
+    if ask:
+        print("清除缓存？(Y/N，默认N)")
+        a = input().lower()
+        if a != 'y':
+            clear = True
+
     try:
-        print("清除缓存...")
-        TUtilLog.info("清除缓存...")
-        shutil.rmtree('./cache')
+        if (ask and clear) or not ask:
+            print("清除缓存...")
+            TUtilLog.info("清除缓存...")
+            shutil.rmtree('./cache')
     except:
         TUtilLog.exception()
     finally:

@@ -28,7 +28,7 @@ def print_info(str):
 
 TUtil.mkdir('./CACHE')
 
-mas_installed = TUtil.is_exists(PATH + "/game/masrun")
+mas_installed = False#TUtil.is_exists(PATH + "/game/masrun")
 FileData = None
 #print("选择语言/Select Language")
 #print("")
@@ -196,7 +196,7 @@ else:
                 except Exception as e:
                     print("下载失败，查看MASToolKit.log获取更多信息")
                     error("下载失败：\n{}".format(traceback.format_exc()))
-                    TUtil.tool_clear()
+                    raise
         if name == 'spritepacks.zip':
             print('是否下载官方精灵包?（未汉化）')
             print('不下载则需要手动安装精灵包')

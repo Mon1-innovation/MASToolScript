@@ -16,6 +16,6 @@ if __name__ == '__main__':
         
         print("--按下回车后退出--")
         input()
-        TUtil.tool_clear()
+        TUtil.tool_clear(True)
         
         #pyinstaller -F .\Tools\MasInstaller.py
