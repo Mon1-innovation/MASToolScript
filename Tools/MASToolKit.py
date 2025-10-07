@@ -77,19 +77,19 @@ print_info("是否启用github release加速")
 print_info("cloudflare workers加速被墙了, 所以应该是用不了的.")
 print_info("Y/N(默认)")
 
-# 根据silent模式设置默认值
-if not SILENT_MODE:
-    a = input()
-    if a.lower() == 'y':
-        TUtil.ENABLE_SPEED = True
-    else:
-        TUtil.ENABLE_SPEED = False
-else:
-    # 静默模式下默认不启用加速
-    TUtil.ENABLE_SPEED = False
-
-if TUtil.ENABLE_SPEED:
-    print_info("启用基于Cloudflare Workers的github开源项目hunshcn/gh-proxy进行加速")
+## 根据silent模式设置默认值
+#if not SILENT_MODE:
+#    a = input()
+#    if a.lower() == 'y':
+#        TUtil.ENABLE_SPEED = True
+#    else:
+#        TUtil.ENABLE_SPEED = False
+#else:
+#    # 静默模式下默认不启用加速
+#    TUtil.ENABLE_SPEED = False
+#
+#if TUtil.ENABLE_SPEED:
+#    print_info("启用基于Cloudflare Workers的github开源项目hunshcn/gh-proxy进行加速")
 
 def tool_box():
     def cn_update():
@@ -224,13 +224,14 @@ def main():
                         continue
                 else:
                     # 静默模式下默认不下载精灵包
-                    print_info('静默模式：跳过精灵包下载')
-                    spdl = False
+                    print_info('静默模式：精灵包下载')
+                    spdl = True
                     continue
                 try:
-                    print_info('准备下载精灵包')
+                    if spdl:
+                        print_info('准备下载精灵包')
 
-                    TUtil.download(dl, CACHE_PATH, 'spritepacks.zip')
+                        TUtil.download(dl, CACHE_PATH, 'spritepacks.zip')
                 except Exception as e:
                     error("下载失败：\n{}".format(traceback.format_exc()))
                     print("下载失败，准备重试...")
