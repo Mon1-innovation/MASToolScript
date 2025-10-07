@@ -70,14 +70,24 @@ def get_base_file():
                 print_info("访问失败, 正在尝试更换备用链接")
     if DOWNLOAD_DDLC_URL == None:
         raise Exception("所有DDLC链接全部尝试失败, 无法进行安装!")
+# 添加全局silent模式标志
+SILENT_MODE = False
+
 print_info("是否启用github release加速")
 print_info("cloudflare workers加速被墙了, 所以应该是用不了的.")
 print_info("Y/N(默认)")
-a = input()
-if a.lower() == 'y':
-    TUtil.ENABLE_SPEED = True
+
+# 根据silent模式设置默认值
+if not SILENT_MODE:
+    a = input()
+    if a.lower() == 'y':
+        TUtil.ENABLE_SPEED = True
+    else:
+        TUtil.ENABLE_SPEED = False
 else:
+    # 静默模式下默认不启用加速
     TUtil.ENABLE_SPEED = False
+
 if TUtil.ENABLE_SPEED:
     print_info("启用基于Cloudflare Workers的github开源项目hunshcn/gh-proxy进行加速")
 
@@ -126,19 +136,24 @@ def tool_box():
                         TUtil.download(dl, GAME_PATH, 'chs_gui.rpa')
                     except Exception as e:
                         print("下载失败，查看MASToolKit.log获取更多信息")
-                        raise 
+                        raise
     print("===============================")
-    print_info("请选择功能")
-    print_info("1. 重装最新版汉化")
-    print_info("2. 安装扩展内容（未实现）")
-    print_info("3. 退出（默认）")
-    a = input()
-    if a == '1':
-        cn_update()
-    elif a == '2':
-        pass
+    if not SILENT_MODE:
+        print_info("请选择功能")
+        print_info("1. 重装最新版汉化")
+        print_info("2. 安装扩展内容（未实现）")
+        print_info("3. 退出（默认）")
+        a = input()
+        if a == '1':
+            cn_update()
+        elif a == '2':
+            pass
+        else:
+            pass
     else:
-        pass
+        # 静默模式下自动执行重装最新版汉化
+        print_info("静默模式：自动重装最新版汉化")
+        cn_update()
 
 
 
@@ -198,17 +213,23 @@ else:
                     error("下载失败：\n{}".format(traceback.format_exc()))
                     raise
         if name == 'spritepacks.zip':
-            print('是否下载官方精灵包?（未汉化）')
-            print('不下载则需要手动安装精灵包')
-            print("Y(默认)/N")
-            spdl = input()
-            if spdl.lower() == 'n':
-                print_info('跳过精灵包下载')
+            if not SILENT_MODE:
+                print('是否下载官方精灵包?（未汉化）')
+                print('不下载则需要手动安装精灵包')
+                print("Y(默认)/N")
+                spdl = input()
+                if spdl.lower() == 'n':
+                    print_info('跳过精灵包下载')
+                    spdl = False
+                    continue
+            else:
+                # 静默模式下默认不下载精灵包
+                print_info('静默模式：跳过精灵包下载')
                 spdl = False
                 continue
             try:
                 print_info('准备下载精灵包')
-                
+
                 TUtil.download(dl, CACHE_PATH, 'spritepacks.zip')
             except Exception as e:
                 error("下载失败：\n{}".format(traceback.format_exc()))
