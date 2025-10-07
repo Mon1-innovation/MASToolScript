@@ -7,7 +7,7 @@ def main(silent=False):
         # 导入MASToolKit时传入silent参数
         import MASToolKit
         MASToolKit.SILENT_MODE = silent
-
+        MASToolKit.main()
         if not silent:
             print("--按下回车后退出--")
             input()
